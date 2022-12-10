@@ -1,38 +1,23 @@
 <?php
 // Solicitud o peticion
-
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('/', function () {
-    return view('home');
-});
+// Nos traemos a la ruta del controlador y nos llevamos la logica (returns) a los controllers y borramos las las rutas del pagesControlles.
 
 
-Route::get('blog', function () {
-    $posts = [
-        [
-            'id' => 1,
-            'title' => 'PHP',
-            'slug' => 'php',
-        ],
-        [
-
-            'id' => 2,
-            'title' => 'laravel',
-            'slug' => 'laravel',
-        ]
-    ];
-
-    return view('blog', ['posts' => $posts] );
-});
+use App\Http\Controllers\PageController;
 
 
 
-Route::get('blog/{slug}', function ($slug) {
-    $posts = $slug;
-    // consulta a base de datos
-    return view('post', ['posts' => $posts] );
+// Route::get('/', [PageController::class, 'home'])->name('home');
+// Route::get('blog', [PageController::class, 'blog'])->name('blog');
+// Route::get('blog/{slug}', [PageController::class, 'post'] )->name('post');
+
+Route::controller(PageController::class,)->group(function () {
+
+Route::get('/',             'home')->name('home');
+Route::get('blog',          'blog')->name('blog');
+Route::get('blog/{post:slug}',   'post')->name('post');
 
 
 });
