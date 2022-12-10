@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+
+    // CREATE
     public function index()
     {
         return view('post.index', [
@@ -18,16 +21,32 @@ class PostController extends Controller
 
     public function create(Post $post)
     {
-        return view('post.create', ['post => $post']);
+        return view('post.create', ['post => $posts']);
     }
 
 
+        // POST - CREATE POST
 
+        public function store(Request $request)
+    {
+        $post = $request->user()->posts()->create([
+            'title' => $title = $request->title,
+            'slug'  => Str::slug($title),
+            'body'  => $request->body,
+        ]);
+
+        return redirect()->route('post.edit', $post);
+    }
+
+
+    // EDIT
 
     public function edit(Post $post)
     {
         return view('post.edit', ['post' => $post]);
     }
+
+
 
 
 
