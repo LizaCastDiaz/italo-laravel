@@ -27,8 +27,13 @@ class PostController extends Controller
 
         // POST - CREATE POST
 
-        public function store(Request $request)
+        public function store(Request $request, Post $post)
         {
+            $request->validate([
+                'title' =>'required',
+                'body' =>'required',
+
+            ]);
             $post = $request->user()->posts()->create([
                 'title' => $title = $request->title,
             'slug'  => Str::slug($title),
@@ -49,6 +54,12 @@ class PostController extends Controller
 // UPDATE
 public function update(Request $request, Post $post)
 {
+    $request->validate([
+        'title' =>'required',
+        'slug' => Str::slug($post->title),
+        'body' =>'required',
+
+    ]);
     $post->update([
         'title' => $title = $request->title,
         'slug'  => Str::slug($title),
