@@ -25,23 +25,24 @@ class PostController extends Controller
     }
 
 
-        // POST - CREATE POST
+    // POST - CREATE POST
 
-        public function store(Request $request, Post $post)
-        {
-            $request->validate([
-                'title' =>'required',
-                'body' =>'required',
+    public function store(Request $request, Post $post)
+    {
+        $request->validate([
+            'title' => 'required',
+            'slug' => 'required | unique:posts,slug',
+            'body' => 'required',
 
-            ]);
-            $post = $request->user()->posts()->create([
-                'title' => $title = $request->title,
-            'slug'  => Str::slug($title),
+        ]);
+        $post = $request->user()->posts()->create([
+            'title' => $request->title,
+            'slug'  => $request->slug,
             'body'  => $request->body,
-            ]);
+        ]);
 
-            return redirect()->route('post.edit', $post);
-        }
+        return redirect()->route('post.edit', $post);
+    }
 
 
     // EDIT
@@ -51,23 +52,23 @@ class PostController extends Controller
         return view('post.edit', compact('post'));
     }
 
-// UPDATE
-public function update(Request $request, Post $post)
-{
-    $request->validate([
-        'title' =>'required',
-        'slug' => Str::slug($post->title),
-        'body' =>'required',
+    // UPDATE
+    public function update(Request $request, Post $post)
+    {
+        $request->validate([
+            'title' => 'required',
+            'slug' => 'required | unique:posts,slug' . $post->id,
+            'body' => 'required',
 
-    ]);
-    $post->update([
-        'title' => $title = $request->title,
-        'slug'  => Str::slug($title),
-        'body'  => $request->body,
-    ]);
+        ]);
+        $post->update([
+            'title' => $title = $request->title,
+            'slug'  => Str::slug($title),
+            'body'  => $request->body,
+        ]);
 
-    return redirect()->route('post.edit', $post);
-}
+        return redirect()->route('post.edit', $post);
+    }
 
 
 
