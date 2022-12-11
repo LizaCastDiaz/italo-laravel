@@ -21,32 +21,42 @@ class PostController extends Controller
 
     public function create(Post $post)
     {
-        return view('post.create', ['post => $posts']);
+        return view('post.create', compact('post'));
     }
 
 
         // POST - CREATE POST
 
         public function store(Request $request)
-    {
-        $post = $request->user()->posts()->create([
-            'title' => $title = $request->title,
+        {
+            $post = $request->user()->posts()->create([
+                'title' => $title = $request->title,
             'slug'  => Str::slug($title),
             'body'  => $request->body,
-        ]);
+            ]);
 
-        return redirect()->route('post.edit', $post);
-    }
+            return redirect()->route('post.edit', $post);
+        }
 
 
     // EDIT
 
     public function edit(Post $post)
     {
-        return view('post.edit', ['post' => $post]);
+        return view('post.edit', compact('post'));
     }
 
+// UPDATE
+public function update(Request $request, Post $post)
+{
+    $post->update([
+        'title' => $title = $request->title,
+        'slug'  => Str::slug($title),
+        'body'  => $request->body,
+    ]);
 
+    return redirect()->route('post.edit', $post);
+}
 
 
 
