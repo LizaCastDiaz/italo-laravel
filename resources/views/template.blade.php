@@ -18,8 +18,8 @@
                 <a href="{{ route('home') }}">
                     <img src="{{ Vite::asset('resources/images/logo.png') }}" class="h-12">
                 </a>
-                <form action="">
-                    <input type="text" name="" id="" placeholder="Buscar">
+                <form action="{{ route('home') }}" method="GET" class="flex-grow">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Buscar" class="border border-gray-200 rounded py-2 px-4 w-1/2">
                 </form>
 
             </div>
